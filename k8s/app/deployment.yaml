@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: app
+spec:
+  selector:
+    matchLabels:
+      app: app
+  replicas: 1 # Tells deployment to run 1 pods matching the template
+  template: # Create pods using pod definition in this template
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: app:latest
+          imagePullPolicy: IfNotPresent # Usar la imagen local si está disponible y solo intentar descargarla de un registry si no lo está
+          env:
+            - name: DATABASE_HOST
+              value: "postgres-service"
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: DATABASE_USER
+              value: "edu"
+            - name: DATABASE_PASSWORD
+              value: "0000"
+            - name: DATABASE_NAME
+              value: "usuarios"
+          ports:
+            - containerPort: 80

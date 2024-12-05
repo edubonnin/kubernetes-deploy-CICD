@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Aplicación Flask</title>
+</head>
+
+<body>
+    <h1>Aplicación Flask</h1>
+    <p>Servidor: {{ hostname }}</p>
+    <h2>Estado de las Conexiones</h2>
+    <p>Base de Datos: {{ db_status }}</p>
+    <p>Cache: {{ cache_status }}</p>
+    <h2>Datos Insertados</h2>
+    {% if data %}
+    <ul>
+        {% for row in data %}
+        <li>{{ row }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No hay datos para mostrar.</p>
+    {% endif %}
+    <h2>Mensaje desde Redis</h2>
+    <p>{{ cache_message }}</p>
+
+</body>
+
+</html>
