@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app: app
-  replicas: 1 # Tells deployment to run 1 pods matching the template
+  replicas: 3 # Tells deployment to run X pods matching the template
   template: # Create pods using pod definition in this template
     metadata:
       labels:
