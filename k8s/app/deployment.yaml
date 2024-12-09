@@ -15,19 +15,11 @@ spec:
         app: app
     spec:
       containers:
-        - name: app
+        - name: app-container
           image: app:latest
           imagePullPolicy: IfNotPresent # Usar la imagen local si está disponible y solo intentar descargarla de un registry si no lo está
-          env:
-            - name: DATABASE_HOST
-              value: "postgres-service"
-            - name: DATABASE_PORT
-              value: "5432"
-            - name: DATABASE_USER
-              value: "edu"
-            - name: DATABASE_PASSWORD
-              value: "0000"
-            - name: DATABASE_NAME
-              value: "usuarios"
+          envFrom:
+            - configMapRef:
+                name: postgres-config
           ports:
             - containerPort: 80

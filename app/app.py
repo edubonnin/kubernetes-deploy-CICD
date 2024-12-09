@@ -13,13 +13,18 @@ app.config['DEBUG'] = app.config['ENV'] == 'development'
 
 
 def get_db_connection():
-    conn = psycopg2.connect(
-        host=os.environ.get('DB_HOST', 'postgres'),
-        database=os.environ.get('DB_NAME', 'usuarios'),
-        user=os.environ.get('DB_USER', 'edu'),
-        password=os.environ.get('DB_PASSWORD', '0000')
-    )
-    return conn
+    try:
+        conn = psycopg2.connect(
+            host=os.environ['POSTGRES_HOST'],
+            port=os.environ['POSTGRES_PORT'],
+            user=os.environ['POSTGRES_USER'],
+            password=os.environ['POSTGRES_PASSWORD'],
+            database=os.environ['POSTGRES_DB']
+        )
+        return conn
+    except KeyError as e:
+        raise RuntimeError(
+            "Error de configuración: Falta la variable de entorno requerida") from e
 
 
 def get_cache_connection():

@@ -1,0 +1,15 @@
+# PersistentVolumeClaim (PVC) allows pods to request specific storage resources
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  labels:
+    app: postgres
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Mi
