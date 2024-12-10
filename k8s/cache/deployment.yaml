@@ -13,19 +13,10 @@ spec:
         app: redis
     spec:
       containers:
-      - name: redis
-        image: redis:alpine
-        command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-        ports:
-        - containerPort: 6379
-        volumeMounts:
-        - name: config
-          mountPath: /usr/local/etc/redis
-          readOnly: true
-      volumes:
-      - name: config
-        configMap:
-          name: redis-config
-          items:
-          - key: redis.conf
-            path: redis.conf
+        - name: redis
+          image: redis:latest
+          ports:
+            - containerPort: 6379
+          envFrom:
+            - configMapRef:
+                name: redis-config

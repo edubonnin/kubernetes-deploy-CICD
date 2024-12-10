@@ -8,6 +8,6 @@ spec:
     - port: 80 # puerto en el que el servicio está escuchando dentro del cluster
       targetPort: 5000 # puerto en el que el servicio redirige el tráfico al pod
       protocol: TCP
-      nodePort: 30008
+      # nodePort: 30008
   selector:
     app: app

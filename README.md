@@ -16,6 +16,7 @@ cd ..
 
 3.
 kubectl apply -f k8s/database
+kubectl apply -f k8s/cache
 kubectl apply -f k8s/app
 
 4.
@@ -23,7 +24,6 @@ minikube service app-service
 
 ## Base de Datos
 
-5.
 kubectl get pods
 kubectl exec -it <pod> -- psql -h localhost -U edu --password -p 5432 usuarios
 // psql -h localhost -p 5432 -U edu -d usuarios
@@ -46,7 +46,9 @@ kubectl delete pods <pod>
 
 ## Caché
 
-redis-cli -h localhost -p 6379
+kubectl get pods
+kubectl exec -it <pod> -- redis-cli
+// redis-cli -h localhost -p 6379
 
 ### Establecer Mensaje
 

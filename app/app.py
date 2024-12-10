@@ -28,12 +28,19 @@ def get_db_connection():
 
 
 def get_cache_connection():
-    cache = redis.Redis(
-        host=os.environ.get('CACHE_HOST', 'cache'),
-        port=int(os.environ.get('CACHE_PORT', '6379')),
-        db=0
-    )
-    return cache
+    try:
+        host = os.environ['REDIS_HOST']
+        port = int(os.environ['REDIS_PORT'])
+    except KeyError as e:
+        # Maneja la falta de variables de entorno
+        raise RuntimeError(
+            f"La variable de entorno {e.args[0]} no está definida"
+        ) from e
+    except ValueError:
+        # Maneja el error de conversión
+        raise ValueError("El puerto debe ser un número entero")
+
+    return redis.Redis(host=host, port=port, db=0)
 
 
 def get_data():
