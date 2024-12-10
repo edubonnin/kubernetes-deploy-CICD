@@ -24,4 +24,22 @@ spec:
             - configMapRef:
                 name: redis-config
           ports:
-            - containerPort: 80
+            - containerPort: 5000 # La app corre en el puerto 5000 dentro del contenedor
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 5000 # Puerto interno donde corre la app
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 5000 # Puerto interno donde corre la app
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3

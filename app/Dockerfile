@@ -14,5 +14,5 @@ COPY . .
 EXPOSE 5000
 
 ENV FLASK_APP=app.py
-# Comando para inicial la aplicación
-CMD ["flask", "run", "--host=0.0.0.0", "--debug"]
+
+CMD ["flask", "run", "--host=0.0.0.0"]

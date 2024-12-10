@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+import json
+import time
+from flask import Flask, Response, render_template
 import psycopg2
 import logging
 import redis
@@ -6,10 +8,6 @@ import os
 import socket
 
 app = Flask(__name__)
-
-# Configurar Flask dependiendo de la variable de entorno
-app.config['ENV'] = os.environ.get('FLASK_ENV', 'production')
-app.config['DEBUG'] = app.config['ENV'] == 'development'
 
 
 def get_db_connection():
@@ -83,6 +81,55 @@ def index():
     hostname = socket.gethostname()  # Obtener el nombre del host
 
     return render_template('index.html', db_status=db_status, cache_status=cache_status, data=data, cache_message=cache_message, hostname=hostname)
+
+
+@app.route('/healthz', methods=['GET'])
+def healthz():
+    timestamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+    # Asumimos que la app está saludable si se ejecuta este código
+    app_status = "healthy"
+
+    # Verificar base de datos
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute('SELECT 1;')
+        db_status = "healthy"
+        cur.close()
+        conn.close()
+    except Exception as e:
+        db_status = f"unhealthy: {str(e)}"
+
+    # Verificar caché
+    try:
+        r = get_cache_connection()
+        r.ping()
+        cache_status = "healthy"
+    except Exception as e:
+        cache_status = f"unhealthy: {str(e)}"
+
+    # Determinar estado global
+    # Si DB o Cache están en estado "unhealthy", el overall pasa a "unhealthy"
+    overall_status = "healthy"
+    if not (db_status == "healthy" and cache_status == "healthy"):
+        overall_status = "unhealthy"
+
+    response = {
+        "status": overall_status,
+        "timestamp": timestamp,
+        "components": {
+            "application": app_status,
+            "database": db_status,
+            "cache": cache_status
+        }
+    }
+
+    json_response = json.dumps(response)
+    # Si hay algún componente crítico en "unhealthy", devolver 503
+    status_code = 200 if overall_status == "healthy" else 503
+
+    return Response(json_response, status=status_code, mimetype='application/json')
 
 
 if __name__ == '__main__':
