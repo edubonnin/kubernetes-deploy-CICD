@@ -34,9 +34,9 @@ jobs:
           black . app
 
       # Test Step
-      # - name: Run tests
-      #   run: |
-      #     pytest app
+      - name: Run tests
+        run: |
+          pytest app/tests
 
   build-and-push:
     runs-on: ubuntu-latest
