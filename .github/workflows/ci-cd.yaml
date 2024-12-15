@@ -9,6 +9,14 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      POSTGRES_HOST: postgres-service
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: edu
+      POSTGRES_PASSWORD: 0000
+      POSTGRES_DB: usuarios
+      REDIS_HOST: redis-service
+      REDIS_PORT: 6379
 
     steps:
       - name: Checkout code
