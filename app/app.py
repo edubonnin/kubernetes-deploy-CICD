@@ -6,8 +6,10 @@ import logging
 import redis
 import os
 import socket
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)  # Expone /metrics por defecto
 
 
 def get_db_connection():

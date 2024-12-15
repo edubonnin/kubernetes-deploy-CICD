@@ -54,12 +54,36 @@ kubectl exec -it <pod> -- redis-cli
 
 set mensaje "Hola desde Redis"
 
+## Monitoring
+
+### Instalación
+
+brew install helm
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm install prom-stack prometheus-community/kube-prometheus-stack --create-namespace --namespace monitoring
+
+### Comprobación
+
+kubectl get svc -n monitoring
+kubectl port-forward svc/prom-stack-kube-prometheus-prometheus -n monitoring 9090:9090
+kubectl port-forward svc/prom-stack-grafana -n monitoring 3000:80
+
+### Obtención de Credenciales Grafana
+USER --> admin
+PASSWORD --> kubectl get secret --namespace monitoring prom-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+## Otros
+
+### Limpieza
 
 kubectl delete pvc --all
 kubectl delete all --all
 minikube image rm app:latest
 minikube image ls
 
-
+### Volúmenes para Static
 
 minikube mount $(pwd)/app/static:/mnt/app-static
