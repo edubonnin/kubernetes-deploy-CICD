@@ -1,0 +1,83 @@
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      # Lint/Format Step
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies for lint & test
+        run: |
+          pip install --upgrade pip
+          pip install black flake8 pytest
+
+      - name: Lint code with flake8
+        run: |
+          flake8 app
+
+      - name: Format code with black
+        run: |
+          black . app
+
+      # Test Step
+      # - name: Run tests
+      #   run: |
+      #     pytest app
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    needs: [build-and-test]
+    if: github.ref == 'refs/heads/main' # Solo hacer push si está en main
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        run: |
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/my-flask-app:latest
+          docker build -t $IMAGE_NAME app
+          docker push $IMAGE_NAME
+
+  deploy-step:
+    runs-on: ubuntu-latest
+    needs: [build-and-push]
+    if: github.ref == 'refs/heads/main' # Solo mostrar en main
+    steps:
+      - name: Show deploy instructions
+        run: |
+          echo "El despliegue se realiza en local con minikube. Sigue estos pasos:"
+          echo "1. Abrir la terminal"
+          echo "2. Situarse en la carpeta de scripts: 'cd scripts'"
+          echo "3. Ejecutar cada uno de los scripts:"
+          echo "    ./init.sh"
+          echo "    ./build.sh"
+          echo "4. Esperar a que los pods estén en estado running"
+          echo "5. Recargar la página si no se muestra una vez los pod estén corriebndo"
+          echo "6. Limpieza con ./clean.sh"
