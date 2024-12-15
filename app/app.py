@@ -60,7 +60,6 @@ def index():
     try:
         cache_conn = get_cache_connection()
         cache_status = 'Connected' if cache_conn.ping() else 'Not Connected'
-
         # Intentar obtener el mensaje desde Redis
         cache_message = cache_conn.get('mensaje')
         if cache_message:

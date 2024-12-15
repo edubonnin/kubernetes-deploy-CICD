@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
+    <meta charset="UTF-8">
     <title>Aplicación Flask</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 
 <body>
@@ -23,7 +25,6 @@
     {% endif %}
     <h2>Mensaje desde Redis</h2>
     <p>{{ cache_message }}</p>
-
 </body>
 
 </html>

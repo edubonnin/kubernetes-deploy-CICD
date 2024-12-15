@@ -55,8 +55,11 @@ kubectl exec -it <pod> -- redis-cli
 set mensaje "Hola desde Redis"
 
 
-
-
+kubectl delete pvc --all
 kubectl delete all --all
 minikube image rm app:latest
 minikube image ls
+
+
+
+minikube mount $(pwd)/app/static:/mnt/app-static
