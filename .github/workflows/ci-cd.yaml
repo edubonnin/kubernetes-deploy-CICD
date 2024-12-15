@@ -24,6 +24,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install black flake8 pytest
+          pip install -r app/requirements.txt
 
       - name: Lint code with flake8
         run: |
