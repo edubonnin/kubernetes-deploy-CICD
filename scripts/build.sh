@@ -2,6 +2,7 @@
 
 set -x
 
+cd ..
 cd app
 minikube image build -t app:latest .
 cd ..
