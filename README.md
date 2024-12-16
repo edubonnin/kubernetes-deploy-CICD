@@ -23,7 +23,6 @@ Este proyecto tiene como objetivo diseñar, implementar y desplegar una infraest
 ```bash
 cd scripts
 ```
-
 ```bash
 ./init.sh
 ```
@@ -33,7 +32,6 @@ cd scripts
 ```bash
 ./build.sh
 ```
-
 
 ### Base de Datos
 
@@ -68,7 +66,6 @@ INSERT INTO usuarios (nombre, email, contraseña) VALUES ('Ana Gómez', 'ana.gom
 ```bash
 kubectl get pods
 ```
-
 ```bash
 kubectl delete pods <pod>
 ```
@@ -80,7 +77,6 @@ Una vez ejecutados los comandos anteriores, comprobar que, efectivamente, el pod
 ```bash
 kubectl get pods
 ```
-
 ```bash
 kubectl exec -it <pod> -- redis-cli
 ```
@@ -100,14 +96,12 @@ En MacOS, ejectuar los siguientes comandos. Instalar primero el gestor de paquet
 ```bash
 brew install helm
 ```
-
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 ```
 ```bash
 helm repo update
 ```
-
 ```bash
 helm install prom-stack prometheus-community/kube-prometheus-stack --create-namespace --namespace monitoring
 ```
@@ -132,13 +126,13 @@ kubectl port-forward svc/prom-stack-kube-prometheus-prometheus -n monitoring 909
 kubectl port-forward svc/prom-stack-grafana -n monitoring 3000:80
 ```
 
-4. Acceder a grafana' mediante la dirección 'localhost:9090'
+4. Acceder a grafana' mediante la dirección 'localhost:3000'
 
 ### Obtención de Credenciales Grafana
-USER --> admin
+USER --> 'admin'
 
 
-PASSWORD -->
+PASSWORD --> se obtiene mediante el siguiente comando:
 ```bash
 kubectl get secret --namespace monitoring prom-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
