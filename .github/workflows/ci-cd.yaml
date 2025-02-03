@@ -84,5 +84,5 @@ jobs:
           echo "    ./init.sh"
           echo "    ./build.sh"
           echo "4. Esperar a que los pods estén en estado running"
-          echo "5. Recargar la página si no se muestra una vez los pod estén corriebndo"
+          echo "5. Recargar la página si no se muestra una vez los pod estén corriendo"
           echo "6. Limpieza con ./clean.sh"

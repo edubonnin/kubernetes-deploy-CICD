@@ -70,7 +70,7 @@ kubectl get pods
 kubectl delete pods <pod>
 ```
 
-Una vez ejecutados los comandos anteriores, comprobar que, efectivamente, el pod se ha vuelto a levantar (mirar tiempo de vida volviendo a ejecutar un 'kubectl get pods') y que recargando la web-app los datos persisten.
+Una vez ejecutados los comandos anteriores, comprobar que, efectivamente, el pod se ha vuelto a levantar (mirar tiempo de vida volviendo a ejecutar un '*kubectl get pods*') y que recargando la web-app los datos persisten.
 
 ### Caché
 
@@ -126,7 +126,7 @@ kubectl port-forward svc/prom-stack-kube-prometheus-prometheus -n monitoring 909
 kubectl port-forward svc/prom-stack-grafana -n monitoring 3000:80
 ```
 
-4. Acceder a grafana' mediante la dirección 'localhost:3000'
+4. Acceder a grafana mediante la dirección 'localhost:3000'
 
 ### Obtención de Credenciales Grafana
 USER --> 'admin'
